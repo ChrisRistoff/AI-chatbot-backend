@@ -10,7 +10,7 @@ app.get("/test", async (_req: Request, res: Response) => {
     const response = await db.query('SELECT * FROM chat;')
 
     try {
-        res.status(200).send(response);
+        res.status(200).send(response.rows);
     } catch (_error) {
         console.log('oops')
     }
