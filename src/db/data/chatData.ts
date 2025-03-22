@@ -1,4 +1,4 @@
-import { Chat } from "./types";
+import { Chat } from "src/DTO/chatDto";
 
 const chatData: Chat[] = [
   {

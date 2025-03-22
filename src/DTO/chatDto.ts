@@ -13,9 +13,3 @@ export type Chat = {
   system_message: string;
   chat_messages: ChatMessages;
 }
-
-export type User = {
-    username: string;
-    email: string;
-    password: string;
-}

@@ -1,5 +1,6 @@
 import db from "../connection";
-import { Chat, User } from "../data/types";
+import { User } from "../data/userData";
+import { Chat } from "src/DTO/chatDto";
 
 type SeedData = {
     users: User[];

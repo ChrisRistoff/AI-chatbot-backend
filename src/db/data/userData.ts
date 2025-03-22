@@ -1,4 +1,8 @@
-import { User } from "./types";
+export type User = {
+    username: string,
+    email: string,
+    password: string,
+}
 
 const userData: User[] = [
     {
