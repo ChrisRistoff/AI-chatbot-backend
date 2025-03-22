@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import db from './db/connection';
+import { customErrors, serverError, sqlErrors } from './middleware/errorHandlers';
 
 export const app = express();
 
@@ -14,3 +15,6 @@ app.get("/test", async (_req: Request, res: Response) => {
         console.log('oops')
     }
 });
+
+//error handling
+app.use(sqlErrors, customErrors, serverError);
