@@ -1,14 +1,23 @@
 import { NextFunction, Request, Response } from "express";
 
-export function sqlErrors(err: any, _: Request, res: Response, next: NextFunction): void {
-    switch(err.code) {
-        case("22P02"):
+interface SQLError extends Error {
+    code?: string
+}
+
+interface CustomSQLError {
+    errCode: number,
+    errMsg: string,
+}
+
+export function sqlErrors(err: SQLError, _: Request, res: Response, next: NextFunction): void {
+    switch (err.code) {
+        case ("22P02"):
             res.status(400).send({ msg: "Invalid input" });
             break;
-        case("23503"):
+        case ("23503"):
             res.status(400).send({ msg: "Bad request" });
             break;
-        case("23505"):
+        case ("23505"):
             res.status(409).send({ msg: "Already exists" });
             break;
         case "23502":
@@ -34,7 +43,7 @@ export function sqlErrors(err: any, _: Request, res: Response, next: NextFunctio
     }
 };
 
-export function customErrors(err: any, _: Request, res: Response, next: NextFunction): void {
+export function customErrors(err: CustomSQLError, _req: Request, res: Response, next: NextFunction): void {
     if (err.errCode) {
         res.status(err.errCode).send({ msg: err.errMsg });
     } else {
@@ -42,7 +51,7 @@ export function customErrors(err: any, _: Request, res: Response, next: NextFunc
     }
 };
 
-export function serverError(err: any, _: Request, res: Response, __: NextFunction): void {
+export function serverError(err: Error, _req: Request, res: Response, _next: NextFunction): void {
     console.log(err);
     res.status(500).send({ msg: "Internal server error" });
 };

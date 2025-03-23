@@ -1,16 +1,17 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcrypt";
 import { NextFunction, Response, Request } from "express";
+import { User } from 'src/db/data/userData';
 
-export async function hashPassword (password: string): Promise<string> {
+export async function hashPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, 10);
 };
 
-export const comparePassword = (password: string, hashedPassword: string) => {
+export async function comparePassword(password: string, hashedPassword: string): Promise<boolean> {
     return bcrypt.compare(password, hashedPassword);
 };
 
-export function createJWT (user: any): string {
+export function createJWT(user: User): string {
     const secret = process.env.JWT_SECRET;
 
     if (!secret) {
@@ -27,7 +28,7 @@ export function createJWT (user: any): string {
     return token;
 };
 
-export function protect (req: Request, res: Response, next: NextFunction): void {
+export function protect(req: Request, res: Response, next: NextFunction): void {
     const bearer = req.headers.authorization;
 
     if (!bearer) {
@@ -36,8 +37,8 @@ export function protect (req: Request, res: Response, next: NextFunction): void 
         return;
     }
 
-    const split_token = bearer.split(" ");
-    const token = split_token[1];
+    const splitToken = bearer.split(" ");
+    const token = splitToken[1];
 
     if (!token) {
         res.status(401).send({ msg: "Token is not valid" });
@@ -57,7 +58,7 @@ export function protect (req: Request, res: Response, next: NextFunction): void 
         req.user = user;
 
         next();
-    } catch (error) {
+    } catch (_error) {
         res.status(401).send({ msg: "Token is not valid" });
     }
 };

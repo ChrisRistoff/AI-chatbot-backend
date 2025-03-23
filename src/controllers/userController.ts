@@ -2,13 +2,24 @@ import { NextFunction, Request, Response } from "express";
 import { hashPassword, createJWT } from "../middleware/authentication";
 import { createUserModel, signUserInModel } from "../models/userModels";
 
-export async function createUser(req: Request, res: Response, next: NextFunction) {
-    const { email, username, password } = req.body;
+interface CreateUserBody {
+    email: string,
+    username: string,
+    password: string
+}
 
-    const hashedPw = await hashPassword(password);
+interface LoginUserBody {
+    username: string,
+    password: string
+}
+
+export async function createUserController(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const body = req.body as CreateUserBody;
+
+    const hashedPw = await hashPassword(body.password);
 
     try {
-        const user = await createUserModel(username, email, hashedPw);
+        const user = await createUserModel(body.username, body.email, hashedPw);
         const token = createJWT(user);
 
         req.user = { username: user.username };
@@ -19,11 +30,11 @@ export async function createUser(req: Request, res: Response, next: NextFunction
     }
 };
 
-export async function signUserIn(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const { username, password } = req.body;
+export async function LoginUserController(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const body = req.body as LoginUserBody;
 
     try {
-        const user = await signUserInModel(username, password);
+        const user = await signUserInModel(body.username, body.password);
 
         const token = createJWT(user);
 

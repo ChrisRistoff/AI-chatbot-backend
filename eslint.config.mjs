@@ -112,12 +112,6 @@ export default [
         selector: 'typeLike',
         format: ['PascalCase'],
       },
-
-      {
-        selector: 'interface',
-        format: ['PascalCase'],
-        prefix: ['I'],
-      },
     ],
     },
   },
