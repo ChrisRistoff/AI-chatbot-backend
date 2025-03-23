@@ -4,11 +4,12 @@ import { chatRouter } from './routers/chatsRouter';
 import { userRouter } from './routers/userRouter';
 
 declare global {
-  namespace Express {
-    interface Request {
-      user?: any;
+    namespace Express {
+        interface Request {
+            user?: any;
+            work?: boolean;
+        }
     }
-  }
 }
 
 export const app = express();
