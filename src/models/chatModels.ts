@@ -1,7 +1,7 @@
 import { Chat } from 'src/DTO/chatDto';
 import db from '../db/connection'
 
-export async function getAllChatsForUser(username: string): Promise<Chat[]> {
+export async function getAllChatsForUserModel(username: string): Promise<Chat[]> {
     const dbQuery = `SELECT * FROM chat WHERE username = $1`
 
     const result = await db.query(dbQuery, [username]);
@@ -9,7 +9,7 @@ export async function getAllChatsForUser(username: string): Promise<Chat[]> {
     return result.rows;
 }
 
-export async function getChatById(id: string): Promise<Chat> {
+export async function getChatByIdModel(id: string): Promise<Chat> {
     const dbQuery = `SELECT * FROM chat WHERE chat_id = $1`
 
     const result = await db.query(dbQuery, [id]);

@@ -30,7 +30,7 @@ export async function createUserController(req: Request, res: Response, next: Ne
     }
 };
 
-export async function LoginUserController(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function loginUserController(req: Request, res: Response, next: NextFunction): Promise<void> {
     const body = req.body as LoginUserBody;
 
     try {
