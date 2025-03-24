@@ -9,7 +9,7 @@ const config: { connectionString?: string; max?: number } = {};
 if (ENV === "production" && process.env.DB_LINK) {
     config.connectionString = process.env.DB_LINK;
     config.max = 2;
-} else if (ENV === "development" && process.env.DB_DEV_LINK) {
+} else if ((ENV === "development" || ENV === "test") && process.env.DB_DEV_LINK) {
     config.connectionString = process.env.DB_DEV_LINK;
     config.max = 2;
 }
