@@ -34,10 +34,7 @@ jobs:
 
       - name: Run tests
         env:
-          PGHOST: localhost
-          PGDATABASE: test_db
-          PGUSER: test_user
-          PGPASSWORD: password
+          DB_DEV_LINK: postgres://test_user:password@localhost:5432/test_db
           JWT_SECRET: asdas123asdA@DAndasdi!32341!
 
         run: npm t
