@@ -96,6 +96,16 @@ describe('Chat Controllers', () => {
             expect(response.body.msg).toBe("You need to be logged in");
         })
 
+        it('should return 401 chat belongs to a different user', async () => {
+            const response = await request(app)
+                .get('/chat')
+                .query({ id: '2' })
+                .set("Authorization", `Bearer ${token}`);
+
+            expect(response.status).toBe(401);
+            expect(response.body.msg).toBe("Chat belongs to a different user");
+        })
+
         it('should return 404 for a non-existing id', async () => {
             const response = await request(app)
                 .get('/chat')
