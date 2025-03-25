@@ -7,7 +7,7 @@
         "dev": "nodemon -e ts --exec \"npm run start\"",
         "start": "npx tsc && node ./dest/src/listen.js",
         "lint": "eslint --fix",
-        "test": "jest",
+        "test": "jest --runInBand",
         "seed": "npx tsc && node ./dest/src/db/seed/run-seed.js"
     },
     "repository": {
