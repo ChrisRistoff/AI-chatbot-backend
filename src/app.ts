@@ -2,12 +2,12 @@ import express from 'express';
 import { customErrors, serverError, sqlErrors } from './middleware/errorHandlers';
 import { chatRouter } from './routers/chatsRouter';
 import { userRouter } from './routers/userRouter';
-import { JwtPayload } from 'jsonwebtoken';
+import { UserPayload } from './middleware/authentication';
 
 declare global {
     namespace Express {
         interface Request {
-            user?: string | JwtPayload;
+            user?: UserPayload;
             work?: boolean;
         }
     }

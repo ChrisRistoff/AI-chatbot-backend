@@ -3,9 +3,9 @@ import { getAllChatsForUserModel, getChatByIdModel } from "../models/chatModels"
 
 export async function getAllChatsForUserController(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-        const { username } = req.query;
+        const currentUser = req.user!.username;
 
-        const chats = await getAllChatsForUserModel(username as string);
+        const chats = await getAllChatsForUserModel(currentUser);
 
         res.status(200).send(chats);
     } catch (error) {
@@ -16,8 +16,9 @@ export async function getAllChatsForUserController(req: Request, res: Response, 
 export async function getChatByIdController(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
         const { id } = req.query;
+        const currentUser = req.user!.username;
 
-        const chat = await getChatByIdModel(id as string);
+        const chat = await getChatByIdModel(id as string, currentUser);
 
         res.status(200).send(chat);
     } catch (error) {

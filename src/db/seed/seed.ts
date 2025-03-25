@@ -1,3 +1,4 @@
+import { hashPassword } from "../../middleware/authentication";
 import db from "../connection";
 import { User } from "../data/userData";
 import { Chat } from "src/DTO/chatDto";
@@ -41,9 +42,11 @@ export const seed = async ({ users, chats }: SeedData): Promise<void> => {
 
 const seedUsers = async (users: User[]): Promise<void> => {
     for (const user of users) {
+        const hashedPassword = await hashPassword(user.password);
+
         await db.query(
             `INSERT INTO users (username, email, password) VALUES ($1, $2, $3)`,
-            [user.username, user.email, user.password]
+            [user.username, user.email, hashedPassword]
         );
 
         console.log('Added user', user.username);
