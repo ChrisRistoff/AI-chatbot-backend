@@ -22,8 +22,6 @@ export async function createUserController(req: Request, res: Response, next: Ne
         const user = await createUserModel(body.username, body.email, hashedPw);
         const token = createJWT(user);
 
-        req.user = { username: user.username };
-
         res.status(201).send({ token });
     } catch (error) {
         next(error);

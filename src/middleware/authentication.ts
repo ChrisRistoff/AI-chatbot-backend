@@ -3,6 +3,11 @@ import bcrypt from "bcrypt";
 import { NextFunction, Response, Request } from "express";
 import { User } from 'src/db/data/userData';
 
+export interface UserPayload {
+    username: string,
+    iat: number
+}
+
 export async function hashPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, 10);
 };
@@ -53,7 +58,7 @@ export function protect(req: Request, res: Response, next: NextFunction): void {
             throw new Error;
         }
 
-        const user = jwt.verify(token, secret);
+        const user = jwt.verify(token, secret) as UserPayload;
 
         req.user = user;
 
