@@ -3,7 +3,7 @@ type ChatMessage = {
     text: string,
 }
 
-type ChatMessages = ChatMessage[];
+export type ChatMessages = ChatMessage[];
 
 export type Chat = {
   username: string;

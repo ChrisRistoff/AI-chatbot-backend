@@ -1,6 +1,7 @@
 import express from 'express';
 import { customErrors, serverError, sqlErrors } from './middleware/errorHandlers';
 import { chatRouter } from './routers/chatsRouter';
+import { chatMessagesRouter } from './routers/chatMessagesRouter';
 import { userRouter } from './routers/userRouter';
 import { UserPayload } from './middleware/authentication';
 
@@ -18,6 +19,7 @@ export const app = express();
 app.use(express.json());
 
 app.use(chatRouter);
+app.use(chatMessagesRouter);
 app.use(userRouter);
 
 //error handling
