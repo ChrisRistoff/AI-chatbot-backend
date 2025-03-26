@@ -7,6 +7,10 @@ export async function removeChatMessageByIdModel(id: number, messageIndex: numbe
 
     const chat: QueryResult<Chat> = await db.query(dbQuery, [id]);
 
+    if (chat.rows.length === 0) {
+        return Promise.reject({errCode: 404, errMsg: `Chat with id ${id} does not exist`});
+    }
+
     if (chat.rows[0].username !== currentUser) {
         return Promise.reject({errCode: 401, errMsg: "Chat belongs to a different user"});
     }

@@ -34,10 +34,9 @@ export const seed = async ({ users, chats }: SeedData): Promise<void> => {
         );
     `);
 
-    console.log('seeding users')
     await seedUsers(users);
-    console.log('seeding chats')
     await seedChats(chats);
+    console.log('seeding complete')
 }
 
 const seedUsers = async (users: User[]): Promise<void> => {
@@ -48,11 +47,7 @@ const seedUsers = async (users: User[]): Promise<void> => {
             `INSERT INTO users (username, email, password) VALUES ($1, $2, $3)`,
             [user.username, user.email, hashedPassword]
         );
-
-        console.log('Added user', user.username);
     }
-
-    console.log('Finished adding all the users.')
 }
 
 const seedChats = async (chats: Chat[]): Promise<void> => {
@@ -68,9 +63,5 @@ const seedChats = async (chats: Chat[]): Promise<void> => {
                 JSON.stringify(chat.chat_messages),
             ]
         );
-
-        console.log('Added chat', chat.title);
     }
-
-    console.log('Finished adding all chats.');
 }

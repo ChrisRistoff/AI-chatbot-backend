@@ -28,7 +28,7 @@ afterAll(async () => {
 
 describe('Chat Controllers', () => {
     describe('GET /chats', () => {
-        it('should return chats for a given username', async () => {
+        it('200: should return chats for a given username', async () => {
             const response = await request(app)
                 .get('/chats')
                 .set("Authorization", `Bearer ${token}`);
@@ -55,17 +55,26 @@ describe('Chat Controllers', () => {
             })
         });
 
-        it('should return 401 not authorzied', async () => {
+        it('401: should return an error if no token is given', async () => {
             const response = await request(app)
-                .get('/chats')
+                .get('/chats');
 
             expect(response.status).toBe(401);
             expect(response.body.msg).toBe("You need to be logged in");
         })
+
+        it('401: should return an error if invalid token is given', async () => {
+            const response = await request(app)
+                .get('/chats')
+                .set("Authorization", `Bearer invalid-token`);
+
+            expect(response.status).toBe(401);
+            expect(response.body.msg).toBe("Token is not valid");
+        })
     });
 
     describe('GET /chat', () => {
-        it('should return a chat for a given id', async () => {
+        it('200: should return a chat for a given id', async () => {
             const response = await request(app)
                 .get('/chat')
                 .query({ id: '1' })
@@ -81,13 +90,13 @@ describe('Chat Controllers', () => {
             expect(body.model).toBe('gpt-3.5-turbo');
             expect(body.system_message).toBe('You are a helpful assistant.');
 
-            expect(body.chat_messages[0].role).toBe('system');
+            expect(body.chat_messages[0].role).toBe('user');
             expect(body.chat_messages[0].text).toBe('You are a helpful assistant.');
-            expect(body.chat_messages[1].role).toBe('user');
+            expect(body.chat_messages[1].role).toBe('AI');
             expect(body.chat_messages[1].text).toBe('Hello, can you help me?');
         });
 
-        it('should return 401 not authorzied', async () => {
+        it('401: should return an error if no token is given', async () => {
             const response = await request(app)
                 .get('/chat')
                 .query({ id: 'any' })
@@ -96,7 +105,16 @@ describe('Chat Controllers', () => {
             expect(response.body.msg).toBe("You need to be logged in");
         })
 
-        it('should return 401 chat belongs to a different user', async () => {
+        it('401: should return an error if invalid token is given', async () => {
+            const response = await request(app)
+                .get('/chats')
+                .set("Authorization", `Bearer invalid-token`);
+
+            expect(response.status).toBe(401);
+            expect(response.body.msg).toBe("Token is not valid");
+        })
+
+        it('401: should return an error if chat belongs to a different user', async () => {
             const response = await request(app)
                 .get('/chat')
                 .query({ id: '2' })
@@ -106,7 +124,7 @@ describe('Chat Controllers', () => {
             expect(response.body.msg).toBe("Chat belongs to a different user");
         })
 
-        it('should return 404 for a non-existing id', async () => {
+        it('404: should return an error for a non-existing id', async () => {
             const response = await request(app)
                 .get('/chat')
                 .query({ id: '222' })
@@ -116,7 +134,7 @@ describe('Chat Controllers', () => {
             expect(response.body.msg).toBe("Chat with ID of 222 not found");
         })
 
-        it('should return 400 for wrong input', async () => {
+        it('400: should return an error for wrong input', async () => {
             const response = await request(app)
                 .get('/chat')
                 .query({ id: 'asdasd' })
