@@ -25,17 +25,22 @@ export const seed = async ({ users, chats }: SeedData): Promise<void> => {
             chat_id SERIAL PRIMARY KEY,
             username VARCHAR REFERENCES users(username) ON DELETE CASCADE,
             title VARCHAR,
+            summary TEXT,
             provider VARCHAR NOT NULL,
             model VARCHAR NOT NULL,
-            system_message TEXT,
+            role TEXT,
             chat_messages JSONB NOT NULL,
             created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
         );
     `);
 
-    await seedUsers(users);
-    await seedChats(chats);
+    try {
+        await seedUsers(users);
+        await seedChats(chats);
+    } catch (error) {
+        console.log(error);
+    }
     console.log('seeding complete')
 }
 
@@ -53,13 +58,14 @@ const seedUsers = async (users: User[]): Promise<void> => {
 const seedChats = async (chats: Chat[]): Promise<void> => {
     for (const chat of chats) {
         await db.query(
-            `INSERT INTO chat (username, title, provider, model, system_message, chat_messages) VALUES ($1, $2, $3, $4, $5, $6)`,
+            `INSERT INTO chat (username, title, summary, provider, model, role, chat_messages) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
             [
                 chat.username,
                 chat.title,
+                chat.summary,
                 chat.provider,
                 chat.model,
-                chat.system_message,
+                chat.role,
                 JSON.stringify(chat.chat_messages),
             ]
         );

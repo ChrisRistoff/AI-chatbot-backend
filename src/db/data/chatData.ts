@@ -4,50 +4,54 @@ const chatData: Chat[] = [
     {
         username: "test_user11",
         title: "First Chat with GPT-3.5",
+        summary: "First chat with chat gpt",
         provider: "OpenAI",
         model: "gpt-3.5-turbo",
-        system_message: "You are a helpful assistant.",
+        role: "You are a helpful assistant.",
         chat_messages: [
-            { role: "user", text: "You are a helpful assistant." },
-            { role: "AI", text: "Hello, can you help me?" },
-            { role: "user", text: "Of course! What do you need?" },
+            { role: "user", text: "You are a helpful assistant.", timestamp: new Date().toISOString() },
+            { role: "AI", text: "Hello, can you help me?", timestamp: new Date().toISOString() },
+            { role: "user", text: "Of course! What do you need?", timestamp: new Date().toISOString() },
         ],
     },
 
     {
         username: "test_user22",
         title: "Coding Question - JavaScript",
+        summary: "AI answering coding questions for the user",
         provider: "Google",
         model: "gemini-pro",
-        system_message: "You are a coding expert specializing in JavaScript.",
+        role: "You are a coding expert specializing in JavaScript.",
         chat_messages: [
-            { role: "user", text: "You are a coding expert specializing in JavaScript." },
-            { role: "AI", text: "How do I reverse a string?" },
-            { role: "user", text: "You can reverse a string in JavaScript using the split, reverse, and join methods: `str.split('').reverse().join('')`" },
+            { role: "user", text: "You are a coding expert specializing in JavaScript.", timestamp: new Date().toISOString() },
+            { role: "AI", text: "How do I reverse a string?", timestamp: new Date().toISOString()  },
+            { role: "user", text: "You can reverse a string in JavaScript using the split, reverse, and join methods: `str.split('').reverse().join('')`", timestamp: new Date().toISOString() },
         ],
     },
 
     {
         username: "test_user11",
         title: "General Knowledge Quiz",
+        summary: "AI answers general questions for the user",
         provider: "OpenAI",
         model: "gpt-4",
-        system_message: "You are a quizmaster.",
+        role: "You are a quizmaster.",
         chat_messages: [
-            { role: "user", text: "You are a quizmaster." },
-            { role: "AI", text: "Ask me a question." },
-            { role: "user", text: "What is the capital of France?" },
+            { role: "user", text: "You are a quizmaster.", timestamp: new Date().toISOString() },
+            { role: "AI", text: "Ask me a question.", timestamp: new Date().toISOString() },
+            { role: "user", text: "What is the capital of France?", timestamp: new Date().toISOString() },
         ],
     },
 
     {
         username: "test_user33",
         title: "Empty Chat",
+        summary: "No summary, chat is empty",
         provider: "Mistral",
         model: "mistral-large",
-        system_message: "You are a very quiet assistant.",
+        role: "You are a very quiet assistant.",
         chat_messages: [
-            { role: "system", text: "You are a very quiet assistant." },
+            { role: "system", text: "You are a very quiet assistant.", timestamp: new Date().toISOString() },
         ],
     },
 ];
