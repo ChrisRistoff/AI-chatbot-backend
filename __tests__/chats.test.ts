@@ -43,15 +43,19 @@ describe('Chat Controllers', () => {
             body.forEach((item) => {
                 expect(item).toHaveProperty('username');
                 expect(item).toHaveProperty('title');
+                expect(item).toHaveProperty('summary');
                 expect(item).toHaveProperty('provider');
                 expect(item).toHaveProperty('model');
-                expect(item).toHaveProperty('system_message');
+                expect(item).toHaveProperty('role');
                 expect(item).toHaveProperty('chat_messages');
 
                 expect(Array.isArray(item.chat_messages)).toBe(true);
 
-                expect(item.chat_messages[0]).toHaveProperty('text');
-                expect(item.chat_messages[0]).toHaveProperty('role');
+                item.chat_messages.forEach((chatMessage) => {
+                    expect(chatMessage).toHaveProperty('text');
+                    expect(chatMessage).toHaveProperty('role');
+                    expect(chatMessage).toHaveProperty('timestamp');
+                })
             })
         });
 
@@ -88,7 +92,7 @@ describe('Chat Controllers', () => {
             expect(body.username).toBe('test_user11');
             expect(body.provider).toBe('OpenAI');
             expect(body.model).toBe('gpt-3.5-turbo');
-            expect(body.system_message).toBe('You are a helpful assistant.');
+            expect(body.role).toBe('You are a helpful assistant.');
 
             expect(body.chat_messages[0].role).toBe('user');
             expect(body.chat_messages[0].text).toBe('You are a helpful assistant.');
