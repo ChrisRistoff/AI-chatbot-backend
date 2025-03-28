@@ -47,6 +47,7 @@ describe('Chat Controllers', () => {
                 expect(item).toHaveProperty('provider');
                 expect(item).toHaveProperty('model');
                 expect(item).toHaveProperty('role');
+                expect(item).toHaveProperty('temperature');
                 expect(item).toHaveProperty('chat_messages');
 
                 expect(Array.isArray(item.chat_messages)).toBe(true);

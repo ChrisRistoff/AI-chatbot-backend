@@ -8,6 +8,7 @@ const chatData: Chat[] = [
         provider: "OpenAI",
         model: "gpt-3.5-turbo",
         role: "You are a helpful assistant.",
+        temperature: 0,
         chat_messages: [
             { role: "user", text: "You are a helpful assistant.", timestamp: new Date().toISOString() },
             { role: "AI", text: "Hello, can you help me?", timestamp: new Date().toISOString() },
@@ -22,6 +23,7 @@ const chatData: Chat[] = [
         provider: "Google",
         model: "gemini-pro",
         role: "You are a coding expert specializing in JavaScript.",
+        temperature: 1,
         chat_messages: [
             { role: "user", text: "You are a coding expert specializing in JavaScript.", timestamp: new Date().toISOString() },
             { role: "AI", text: "How do I reverse a string?", timestamp: new Date().toISOString()  },
@@ -36,6 +38,7 @@ const chatData: Chat[] = [
         provider: "OpenAI",
         model: "gpt-4",
         role: "You are a quizmaster.",
+        temperature: 0,
         chat_messages: [
             { role: "user", text: "You are a quizmaster.", timestamp: new Date().toISOString() },
             { role: "AI", text: "Ask me a question.", timestamp: new Date().toISOString() },
@@ -50,6 +53,7 @@ const chatData: Chat[] = [
         provider: "Mistral",
         model: "mistral-large",
         role: "You are a very quiet assistant.",
+        temperature: 10,
         chat_messages: [
             { role: "system", text: "You are a very quiet assistant.", timestamp: new Date().toISOString() },
         ],

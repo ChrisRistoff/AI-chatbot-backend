@@ -29,6 +29,7 @@ export const seed = async ({ users, chats }: SeedData): Promise<void> => {
             provider VARCHAR NOT NULL,
             model VARCHAR NOT NULL,
             role TEXT,
+            temperature INT,
             chat_messages JSONB NOT NULL,
             created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -58,7 +59,7 @@ const seedUsers = async (users: User[]): Promise<void> => {
 const seedChats = async (chats: Chat[]): Promise<void> => {
     for (const chat of chats) {
         await db.query(
-            `INSERT INTO chat (username, title, summary, provider, model, role, chat_messages) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+            `INSERT INTO chat (username, title, summary, provider, model, role, temperature, chat_messages) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
             [
                 chat.username,
                 chat.title,
@@ -66,6 +67,7 @@ const seedChats = async (chats: Chat[]): Promise<void> => {
                 chat.provider,
                 chat.model,
                 chat.role,
+                chat.temperature,
                 JSON.stringify(chat.chat_messages),
             ]
         );

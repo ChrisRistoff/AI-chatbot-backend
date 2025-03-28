@@ -13,5 +13,6 @@ export type Chat = {
     provider: string;
     model: string;
     role: string;
+    temperature: number,
     chat_messages: ChatMessages;
 }
