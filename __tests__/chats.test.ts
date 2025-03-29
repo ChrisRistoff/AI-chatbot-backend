@@ -4,7 +4,7 @@ import db from "../src/db/connection";
 import request from 'supertest';
 import chatData from "../src/db/data/chatData";
 import userData from "../src/db/data/userData";
-import { Chat } from "src/DTO/chatDto";
+import { Chat, ChatMessages } from "src/DTO/chatDto";
 
 let server: any;
 let token: any;
@@ -149,4 +149,66 @@ describe('Chat Controllers', () => {
             expect(response.body.msg).toBe("Invalid input");
         })
     });
+
+    describe('POST /save/chat', () => {
+        it('201 Should save and return saved chat', async () => {
+            const chatMessages: ChatMessages = [
+                {role: 'USER', text: 'user message', timestamp: 'test timestamp'},
+                {role: 'AI', text: 'ai message', timestamp: 'test timestamp'}
+            ]
+
+            const chatPayload: Chat = {
+                username: 'this wont be used',
+                title: 'new chat',
+                summary: 'new summary',
+                provider: 'new provider',
+                model: 'new model',
+                role: 'new role',
+                temperature: 3,
+                chat_messages: chatMessages
+            }
+
+            const response = await request(app)
+                .post('/save/chat')
+                .send(chatPayload)
+                .set("Authorization", `Bearer ${token}`);
+
+            expect(response.status).toBe(201);
+
+            const chat: Chat = response.body;
+
+            expect(chat.username).toBe('test_user11');
+            expect(chat.title).toBe('new chat');
+            expect(chat.summary).toBe('new summary');
+            expect(chat.provider).toBe('new provider');
+            expect(chat.model).toBe('new model');
+            expect(chat.role).toBe('new role');
+            expect(chat.temperature).toBe(3);
+
+            expect(chat.chat_messages[0].role).toBe('USER');
+            expect(chat.chat_messages[0].text).toBe('user message');
+            expect(chat.chat_messages[0].timestamp).toBe('test timestamp');
+
+            expect(chat.chat_messages[1].role).toBe('AI');
+            expect(chat.chat_messages[1].text).toBe('ai message');
+            expect(chat.chat_messages[1].timestamp).toBe('test timestamp');
+        })
+
+        it('400 Should return an error if no payload sent', async () => {
+            const response = await request(app)
+                .post('/save/chat')
+                .set("Authorization", `Bearer ${token}`);
+
+            expect(response.status).toBe(400);
+            expect(response.body.msg).toBe('Not null violation');
+        })
+
+        it('401 Should return an error if user not signed in', async () => {
+            const response = await request(app)
+                .post('/save/chat');
+
+            expect(response.status).toBe(401);
+            expect(response.body.msg).toBe('You need to be logged in');
+        })
+    })
 });

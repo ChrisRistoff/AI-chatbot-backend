@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { removeChatMessageByIdModel } from "../models/chatMessagesModels";
+import * as models from "../models/chatMessagesModels";
 
 interface RemoveChatMessageBody {
     id: number,
@@ -11,7 +11,7 @@ export async function removeChatMessageByIdController(req: Request, res: Respons
         const { id, messageIndex } = req.body as RemoveChatMessageBody;
         const currentUser = req.user!.username;
 
-        await removeChatMessageByIdModel(id, messageIndex, currentUser);
+        await models.removeChatMessageByIdModel(id, messageIndex, currentUser);
 
         res.status(204).send();
     } catch (error) {

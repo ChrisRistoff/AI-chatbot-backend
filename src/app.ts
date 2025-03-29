@@ -1,5 +1,5 @@
 import express from 'express';
-import { customErrors, serverError, sqlErrors } from './middleware/errorHandlers';
+import * as errors from './middleware/errorHandlers';
 import { chatRouter } from './routers/chatsRouter';
 import { chatMessagesRouter } from './routers/chatMessagesRouter';
 import { userRouter } from './routers/userRouter';
@@ -22,5 +22,4 @@ app.use(chatRouter);
 app.use(chatMessagesRouter);
 app.use(userRouter);
 
-//error handling
-app.use(sqlErrors, customErrors, serverError);
+app.use(errors.sqlErrors, errors.customErrors, errors.serverError);
