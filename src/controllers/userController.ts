@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { hashPassword, createJWT } from "../middleware/authentication";
-import { createUserModel, signUserInModel } from "../models/userModels";
+import * as models from "../models/userModels";
 
 interface CreateUserBody {
     email: string,
@@ -19,7 +19,7 @@ export async function createUserController(req: Request, res: Response, next: Ne
     const hashedPw = await hashPassword(body.password);
 
     try {
-        const user = await createUserModel(body.username, body.email, hashedPw);
+        const user = await models.createUserModel(body.username, body.email, hashedPw);
         const token = createJWT(user);
 
         res.status(201).send({ token });
@@ -32,8 +32,7 @@ export async function loginUserController(req: Request, res: Response, next: Nex
     const body = req.body as LoginUserBody;
 
     try {
-        const user = await signUserInModel(body.username, body.password);
-
+        const user = await models.signUserInModel(body.username, body.password);
         const token = createJWT(user);
 
         res.status(200).send({ token });
