@@ -1,9 +1,9 @@
-import { seed } from "../src/db/seed/seed";
-import { app } from "../src/app";
-import db from "../src/db/connection";
+import { seed } from "../../src/db/seed/seed";
+import { app } from "../../src/app";
+import db from "../../src/db/connection";
 import request from 'supertest';
-import chatData from "../src/db/data/chatData";
-import userData from "../src/db/data/userData";
+import chatData from "../../src/db/data/chatData";
+import userData from "../../src/db/data/userData";
 import { Chat, ChatMessages } from "src/DTO/chatDto";
 
 let server: any;
@@ -169,7 +169,7 @@ describe('Chat Controllers', () => {
             }
 
             const response = await request(app)
-                .post('/save/chat')
+                .post('/chat/save')
                 .send(chatPayload)
                 .set("Authorization", `Bearer ${token}`);
 
@@ -196,7 +196,7 @@ describe('Chat Controllers', () => {
 
         it('400 Should return an error if no payload sent', async () => {
             const response = await request(app)
-                .post('/save/chat')
+                .post('/chat/save')
                 .set("Authorization", `Bearer ${token}`);
 
             expect(response.status).toBe(400);
@@ -205,7 +205,7 @@ describe('Chat Controllers', () => {
 
         it('401 Should return an error if user not signed in', async () => {
             const response = await request(app)
-                .post('/save/chat');
+                .post('/chat/save');
 
             expect(response.status).toBe(401);
             expect(response.body.msg).toBe('You need to be logged in');
