@@ -2,6 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import * as models from "../models/chatModels";
 import { Chat } from "src/DTO/chatDto";
 
+export interface UpdateChatBody extends Chat {
+    chatId: number;
+}
+
 export async function getAllChatsForUserController(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
         const currentUser = req.user!.username;
@@ -29,7 +33,7 @@ export async function getChatByIdController(req: Request, res: Response, next: N
 
 export async function saveChatController(req: Request, res: Response, next: NextFunction): Promise<void> {
     const chat: Chat = {
-        ...req.body as Chat,
+        ...req.body,
         username: req.user!.username
     }
 
@@ -39,5 +43,20 @@ export async function saveChatController(req: Request, res: Response, next: Next
         res.status(201).send(savedChat);
     } catch (error) {
         next(error);
+    }
+}
+
+export async function updateChatController(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const chat: UpdateChatBody = {
+        ...req.body,
+        username: req.user!.username
+    }
+
+    try {
+        const updatedChat = await models.updateChatModel(chat);
+
+        res.status(201).send(updatedChat);
+    } catch (error) {
+        next(error)
     }
 }

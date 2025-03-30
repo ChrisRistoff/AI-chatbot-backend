@@ -6,4 +6,5 @@ export const chatRouter = Router();
 
 chatRouter.get("/chats", protect, controllers.getAllChatsForUserController);
 chatRouter.get("/chat", protect, controllers.getChatByIdController);
-chatRouter.post("/save/chat", protect, controllers.saveChatController);
+chatRouter.post("/chat/save", protect, controllers.saveChatController);
+chatRouter.post("/chat/update", protect, controllers.updateChatController);
