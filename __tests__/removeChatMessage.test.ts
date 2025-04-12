@@ -30,8 +30,7 @@ describe('Chat messages', () => {
     describe('POST /chat/removeMessage', () => {
         it('204: Should remove chat message', async () => {
             const getChatResponse = await request(app)
-                .get('/chat')
-                .query({ id: '1' })
+                .get('/chat/1')
                 .set("Authorization", `Bearer ${token}`);
 
             expect(getChatResponse.status).toBe(200);
@@ -52,8 +51,7 @@ describe('Chat messages', () => {
             expect(removeMessageResponse.status).toBe(204);
 
             const updatedChatResponse = await request(app)
-                .get('/chat')
-                .query({ id: '1' })
+                .get('/chat/1')
                 .set("Authorization", `Bearer ${token}`);
 
             expect(updatedChatResponse.status).toBe(200);

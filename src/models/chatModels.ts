@@ -95,3 +95,21 @@ export async function updateChatModel(chat: UpdateChatBody): Promise<Chat> {
 
     return updatedChat.rows[0];
 }
+
+export async function deleteChatModel(chatId: string, username: string): Promise<void> {
+    const getChatQuery = 'SELECT * FROM chat WHERE chat_id = $1';
+
+    const currentChat: QueryResult<Chat> = await db.query(getChatQuery, [chatId]);
+
+    if (currentChat.rows.length === 0) {
+        return Promise.reject({ errCode: 404, errMsg: `Chat with ID of ${chatId} not found` });
+    }
+
+    if (currentChat.rows[0].username !== username) {
+        return Promise.reject({errCode: 401, errMsg: 'Chat belongs to a different user'});
+    }
+
+    const deleteChatQuery = 'DELETE FROM chat WHERE chat_id = $1';
+
+    await db.query(deleteChatQuery, [chatId]);
+}
