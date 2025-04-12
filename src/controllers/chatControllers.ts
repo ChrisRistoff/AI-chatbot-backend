@@ -20,7 +20,7 @@ export async function getAllChatsForUserController(req: Request, res: Response, 
 
 export async function getChatByIdController(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-        const { id } = req.query;
+        const { id } = req.params;
         const currentUser = req.user!.username;
 
         const chat = await models.getChatByIdModel(id as string, currentUser);
@@ -58,5 +58,18 @@ export async function updateChatController(req: Request, res: Response, next: Ne
         res.status(201).send(updatedChat);
     } catch (error) {
         next(error)
+    }
+}
+
+export async function deleteChatController(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const username = req.user!.username;
+    const chatId = req.params.id as string;
+
+    try {
+        await models.deleteChatModel(chatId, username);
+
+        res.status(204).send();
+    } catch (error) {
+        next(error);
     }
 }

@@ -81,8 +81,7 @@ describe('Chat Controllers', () => {
     describe('GET /chat', () => {
         it('200: should return a chat for a given id', async () => {
             const response = await request(app)
-                .get('/chat')
-                .query({ id: '1' })
+                .get('/chat/1')
                 .set("Authorization", `Bearer ${token}`);
 
             const body: Chat = response.body;
@@ -103,8 +102,7 @@ describe('Chat Controllers', () => {
 
         it('401: should return an error if no token is given', async () => {
             const response = await request(app)
-                .get('/chat')
-                .query({ id: 'any' })
+                .get('/chat/any')
 
             expect(response.status).toBe(401);
             expect(response.body.msg).toBe("You need to be logged in");
@@ -121,8 +119,7 @@ describe('Chat Controllers', () => {
 
         it('401: should return an error if chat belongs to a different user', async () => {
             const response = await request(app)
-                .get('/chat')
-                .query({ id: '2' })
+                .get('/chat/2')
                 .set("Authorization", `Bearer ${token}`);
 
             expect(response.status).toBe(401);
@@ -131,8 +128,7 @@ describe('Chat Controllers', () => {
 
         it('404: should return an error for a non-existing id', async () => {
             const response = await request(app)
-                .get('/chat')
-                .query({ id: '222' })
+                .get('/chat/222')
                 .set("Authorization", `Bearer ${token}`);
 
             expect(response.status).toBe(404);
@@ -141,8 +137,7 @@ describe('Chat Controllers', () => {
 
         it('400: should return an error for wrong input', async () => {
             const response = await request(app)
-                .get('/chat')
-                .query({ id: 'asdasd' })
+                .get('/chat/asdfasdf')
                 .set("Authorization", `Bearer ${token}`);
 
             expect(response.status).toBe(400);
@@ -206,6 +201,63 @@ describe('Chat Controllers', () => {
         it('401 Should return an error if user not signed in', async () => {
             const response = await request(app)
                 .post('/chat/save');
+
+            expect(response.status).toBe(401);
+            expect(response.body.msg).toBe('You need to be logged in');
+        })
+    })
+
+    describe('POST delete/chat', () => {
+        it('204 should delete chat', async () => {
+            const response = await request(app)
+                .get('/chat/1')
+                .set("Authorization", `Bearer ${token}`);
+
+            expect(response.status).toBe(200);
+
+            const deleteChatResponse = await request(app)
+                .post('/chat/delete/1')
+                .set("Authorization", `Bearer ${token}`);
+
+            expect(deleteChatResponse.status).toBe(204);
+
+            const getDeletedChatResponse = await request(app)
+                .get('/chat/1')
+                .set("Authorization", `Bearer ${token}`);
+
+            expect(getDeletedChatResponse.status).toBe(404);
+        })
+
+        it('401: should return an error if chat belongs to a different user', async () => {
+            const response = await request(app)
+                .post('/chat/delete/2')
+                .set("Authorization", `Bearer ${token}`);
+
+            expect(response.status).toBe(401);
+            expect(response.body.msg).toBe("Chat belongs to a different user");
+        })
+
+        it('404: should return an error for a non-existing id', async () => {
+            const response = await request(app)
+                .post('/chat/delete/222')
+                .set("Authorization", `Bearer ${token}`);
+
+            expect(response.status).toBe(404);
+            expect(response.body.msg).toBe("Chat with ID of 222 not found");
+        })
+
+        it('400: should return an error for wrong input', async () => {
+            const response = await request(app)
+                .post('/chat/delete/asdfasdf')
+                .set("Authorization", `Bearer ${token}`);
+
+            expect(response.status).toBe(400);
+            expect(response.body.msg).toBe("Invalid input");
+        })
+
+        it('401 Should return an error if user not signed in', async () => {
+            const response = await request(app)
+                .post('/chat/delete/1');
 
             expect(response.status).toBe(401);
             expect(response.body.msg).toBe('You need to be logged in');

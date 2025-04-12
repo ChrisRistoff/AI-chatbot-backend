@@ -35,8 +35,7 @@ const reseedChatAndUpdateUser = async () => {
     }
 
     const chatResponse = await request(app)
-        .get('/chat')
-        .query({ id: '1' })
+        .get('/chat/1')
         .set("Authorization", `Bearer ${token}`);
 
     initialChat = chatResponse.body;
@@ -59,7 +58,6 @@ const checkChat = (initialChat: Chat, {
     role = true,
     chatMessages = true
 }) => {
-
     expect(initialChat.username).toBe(username);
 
     title ? expect(initialChat.title).toBe('First Chat with GPT-3.5') : undefined;
@@ -145,8 +143,7 @@ describe('Update Chat Controller', () => {
             }
 
             const chatResponse = await request(app)
-                .get('/chat')
-                .query({ id: '1' })
+                .get('/chat/1')
                 .set("Authorization", `Bearer ${token}`);
 
             updatedChat = chatResponse.body;

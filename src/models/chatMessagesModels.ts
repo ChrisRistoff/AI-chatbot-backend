@@ -2,7 +2,7 @@ import { Chat, ChatMessages } from 'src/DTO/chatDto';
 import db from '../db/connection'
 import { QueryResult } from 'pg';
 
-export async function removeChatMessageByIdModel(id: number, messageIndex: number, currentUser: string): Promise<Chat> {
+export async function removeChatMessageByIdModel(id: number, messageIndex: number, currentUser: string): Promise<void> {
     const dbQuery = `SELECT * FROM chat WHERE chat_id = $1`;
 
     const chat: QueryResult<Chat> = await db.query(dbQuery, [id]);
@@ -32,7 +32,5 @@ export async function removeChatMessageByIdModel(id: number, messageIndex: numbe
         RETURNING *
     `;
 
-    const updatedChat: QueryResult<Chat> = await db.query(updateMessagesQuery, [JSON.stringify(newChatMessages), id]);
-
-    return updatedChat.rows[0];
+    await db.query(updateMessagesQuery, [JSON.stringify(newChatMessages), id]);
 }
